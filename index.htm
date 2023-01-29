@@ -14,12 +14,8 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="/content/images/favicon.png"/>
-
     <link rel="stylesheet" href="https://www.bootstrapdash.com/demo/star-admin-pro/src/assets/vendors/jquery-file-upload/uploadfile.css">
 
-
-    <!-- <script src="../assets/js/jquery.js"></script> -->
-    <!-- <script src="../assets/js/shared/chart.js"></script> -->
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="//jqueryui.com/resources/demos/style.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -42,24 +38,9 @@
   </head>
   <body style = "background-image: url('content/images/i_love_dls.png');">
   <script type="text/javascript">
-  
-  $( function() {
-    var handle = $( "#custom-handle" );
-    $( "#slider" ).slider({
-      max: 0.95,
-      min: 0.2,
-      step: 0.01,
-      create: function() {
-        handle.text( $( this ).slider( "value" ) );
-      },
-      slide: function( event, ui ) {
-        handle.text( ui.value );
-      }
-    });
-  } );
 
     if (window.FormData === undefined) {
-      alert('В вашем браузере FormData не поддерживается')
+      alert('Your browser don`t support FormData')
     }
   	
   var id = 0;
@@ -74,79 +55,55 @@
       $.get('/upload/' + id +'.out.png').done(function(data){
         
         console.log('pull ok');
-        $('#out').prop('src', '/upload/'+ id +'.out.png');
+        $('#after').prop('src', '/upload/'+ id +'.out.png');
         clearTimeout(gtimer)
         $.get('/upload/' + id +'.out.json').done(function(data){
           // console.log(data)
-          out = ''
-          // for (it in data){
-          //   // console.log(data[it])
-          //   ob = data[it]
-          //   // console.log(out)
-
-          //   for (itt in  ob) {
-          //     out += itt + ': ['
-          //     // console.log('' itt)
-          //     for(iit in ob[itt]){
-          //       out += ob[itt][iit] + ','   
-          //     }
-          //     out = out.slice(0, -1) + ']<br>';
-          //   }
-          // }
-          $('#result').html('Детекция завершена <br>' + out);
+          $('#result').html('Detection completed<br>');
 
         });
-
-        // $('#result').html();
-
  
       }).fail( function(data) {
         console.log('pull fail');
       });
 
     }
-
+    // function upload(){
+    //   $('#result').html('Image uploaded'); 
+    // }
 
     function send(){
 
       var formData = new FormData();
       formData.append('filename', $("#pic")[0].files[0]);
-      formData.append('prb', $( "#slider").slider( "value" ));
+      formData.append('prb', 0.2);
    
 
       $.ajax({
         type: "POST",
         crossDomain: true,
-        // headers: {'Access-Control-Allow-Origin': 'http://127.0.0.1:8081'},
-        // dataType: 'jsonp',
-        // url: '/upload',
-        // url: '127.0.0.1:8081/upload',
         url: 'http://127.0.0.1:8081/upload',
         cache: false,
         contentType: false,
         processData: false,
         data: formData,
-        // dataType : '',
         success: function(msg){
           console.log(msg);
           console.log(msg.id);
           if (!msg.error ) {
-            // $("#js-file").hide();
             if (msg.success == 'Ok'){
                 $('#result').html('Image uploaded, please wait for processing'); 
             } else {
                 $('#result').html(msg.success);
             }
-            $('#out').prop('src', '/upload/'+ msg.id +'.png');
+            $('#before').prop('src', '/upload/'+ msg.id +'.png');
             console.log('return id')
             console.log(msg.id)
             id = msg.id
             pull_status();
 
-            // console.log(msg.text);
           } else {
-            $('#result').html('Картинка испорчена');
-            // console.log(msg)
+            $('#result').html('The image is corrupted');
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -154,11 +111,11 @@
           console.log(textStatus);
           console.log(errorThrown);
           if (errorThrown == 'Request Entity Too Large') {
-              $('#result').html('Загружаемый файл слишком большой' );
+              $('#result').html('Uploaded file is too big' );
           }
 
           if (errorThrown == 'Internal Server Error') {
-              $('#result').html('Ошибка сервера' );
+              $('#result').html('Internal Server Error' );
           }
 
         }
@@ -183,7 +140,7 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-12 text-center">
-      <h3>Choose parameter value and upload image</h3> 
+      <h3>Upload and send image</h3> 
 
 
       <div class="main-panel">
@@ -194,8 +151,10 @@
                   <div id="custom-handle" class="ui-slider-handle"></div>
                </div>
                <input type="hidden" name="prb" id="prb">
-               <button type="submit" class="btn btn-success mr-2" onclick="send()">Submit</button>
-               <div class="ajax-file-upload" style="position: relative; overflow: hidden; cursor: default;" >Upload
+               <!-- <button type="submit" class="btn btn-success mr-2" onclick="send()">Send</button> -->
+               <button type="submit" class="btn btn-primary" onclick="send()">Send</button>
+               <div class="btn btn-primary" style="position: relative; overflow: hidden; cursor: default;" >Upload
+                <!-- <input type="file" id="pic"  style="position: absolute; cursor: pointer; top: 0px; width: 100%; height: 100%; left: 0px; z-index: 100; opacity: 0;" oninstall="upload()"> -->
                 <input type="file" id="pic"  style="position: absolute; cursor: pointer; top: 0px; width: 100%; height: 100%; left: 0px; z-index: 100; opacity: 0;">
               </div>
 
@@ -203,12 +162,21 @@
           </div>
 
           <div id="result"></div>
+          <div id="be"></div>
           
           <div class="row">
+            <h1>Before</h1>
             <div class="col-md-12 grid-margin stretch-card" >
-              <img id="out" width="">
+              <img id="before" width="">
             </div>
           </div>
+          <div class="row">
+            <h1>After</h1>
+            <div class="col-md-12 grid-margin stretch-card" >
+              <img id="after" width="">
+            </div>
+          </div>
+        
         
         </div>
       </div>
