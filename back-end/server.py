@@ -10,7 +10,7 @@ import subprocess
 from PIL import Image
 
 python_path = '/home/viktor/anaconda3/envs/openmmlab/bin/python3'
-script_path = '/home/viktor/Projects/Courses/DLS/HWs/FinalProject/Examples/web_mmdetection/back-end/detection_script.py'
+script_path = '/home/viktor/Projects/Courses/DLS/HWs/FinalProject/MyProject/detection/back-end/detection_script.py'
 
 def upload(request):
 

@@ -1,9 +1,11 @@
 # Условие
 Deep Learning School  graduftion project:  Реализация модели детекции в веб-приложении
-TODO: add ipynb file to rep
 ## Описание
 Выбор фреймворка/библиотеки для решения задачи детекции:
 * Был выбран набор инструментов [mmdetection](https://github.com/open-mmlab/mmdetection/). В нем выбор пал на модель mask_rcnn_r50_caffe_fpn_mstrain-poly_3x_coco, которая обучена на датасете [COCO](https://cocodataset.org/)
+
+# Корневой файл
+Ссылка на корневой файл: https://colab.research.google.com/drive/16Hoa0oNjd1fIxIJfnHkwSyZW6L9VXa1C?usp=sharing
 
 ## Структура проекта
 
@@ -29,6 +31,9 @@ Back-end:
 4. Из корня запускаем сервер (по умолчанию запускается на порте 8000) для отдачи статики python: -m http.server
 5. В файле server.py изменить пути по питона (python_path) и скрипта для детекции (script_path).
 6. Запуск основного сервера:  sudo python3 back-end/server.py
+
+# Демонстрация
+Демонстрацию работы можно посмотреть на видео по ссылке: https://drive.google.com/file/d/1zwKhSosy8uAVDq1b3j3uN-yvNAoW8Ar4/view?usp=sharing
 
 # Источники
 * [mmdetection](https://github.com/open-mmlab/mmdetection/)
